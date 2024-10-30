@@ -1,0 +1,10 @@
+__pycache__
+bge*
+bin
+include
+lib
+lib64
+qwen*
+share
+tiny-llama*
+pyvenv.cfg
