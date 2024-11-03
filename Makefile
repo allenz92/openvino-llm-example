@@ -67,7 +67,7 @@ prepare: $(foreach x,$(prepares),prepare/$(x))
 test:
 	:
 
-tar_excludes = $(wildcard $(shell cat .gitignore)) .git src.tgz
+tar_excludes = $(wildcard $(shell cat .gitignore)) .git src.tar.gz
 	
 tar:
-	tar $(foreach x,$(tar_excludes),--exclude $(x)) -czf src.tgz .
+	tar $(foreach x,$(tar_excludes),--exclude $(x)) -czf src.tar.gz .
