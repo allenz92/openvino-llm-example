@@ -8,3 +8,6 @@ qwen*
 share
 tiny-llama*
 pyvenv.cfg
+local
+documents
+vector-store
