@@ -1,6 +1,6 @@
 import json
-
 import requests
+import os
 
 def convert_markdown_to_text(markdown_text, api_key):
     """
@@ -14,11 +14,11 @@ def convert_markdown_to_text(markdown_text, api_key):
     str: 转换后的纯文本。
     """
     # OpenAI API的URL
-    url = "https://dsw-gateway-cn-hangzhou.data.aliyun.com/dsw-xxx/proxy/8000/v1/chat/completions"
+    url = f"https://dsw-gateway-cn-hangzhou.data.aliyun.com/{os.environ["DSW_GATEWAY_KEY"] or 'dsw-xxx'}/proxy/8000/v1/chat/completions"
 
     # 构建请求的headers，包含API密钥
     headers = {
-        "cookie": """  """,
+        "cookie": os.environ["DSW_GATEWAY_COOKIE"] or '',
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
@@ -53,7 +53,7 @@ def convert_markdown_to_text(markdown_text, api_key):
         return "请求失败，状态码：" + str(response.status_code)
 
 # 使用示例
-api_key = "YOUR_OPENAI_API_KEY"  # 替换为你的OpenAI API密钥
+api_key = os.environ['FOO_OPENAI_API_KEY'] or "YOUR_OPENAI_API_KEY"  # 替换为你的OpenAI API密钥
 
 with open("产品矩阵.md", "r") as f:
     raw_data = f.readlines()
@@ -64,6 +64,8 @@ spliter = raw_data[1]
 for i, row in enumerate(raw_data):
     if i < 2:
         continue
+
+    if os.path.isfile(f"documents/{i}.txt"): continue
     # 移除行尾的换行符
     row = row.strip()
     text = row.replace(" ","")
@@ -80,7 +82,8 @@ for i, row in enumerate(raw_data):
     print(content)
     content = content.replace("- ", "").replace("\n", "")
 
-    with open(f"documents/{i}.txt", "w+") as file:
+    os.system("mkdir -p documents")
+    with open(f"documents/{i}.txt", "w") as file:
         file.write(content)
 
 
